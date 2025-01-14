@@ -29,7 +29,7 @@ jobs:
         with:
           repository: AntelopeIO/reference-contracts
           path: reference-contracts
-      - run: cdt-cpp -abigen src/${{ vars.SC_NAME }}.cpp -o ${{ vars.SC_NAME }}.wasm -I include/${{ vars.SC_NAME }} -I reference-contracts/contracts/eosio.system/include/eosio.system
+      - run: cdt-cpp -abigen src/${{ vars.SC_NAME }}.cpp -o ${{ vars.SC_NAME }}.wasm -I include/${{ vars.SC_NAME }} -I reference-contracts/contracts/eosio.system/include
       - run: cleos wallet create --file wallet.pw >/dev/null
       - run: cleos wallet open
       - run: cat wallet.pw | cleos wallet unlock
