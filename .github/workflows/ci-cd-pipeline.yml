@@ -1,0 +1,47 @@
+---
+name: deploy smart contract
+on:
+  push:
+    branches:
+    - 'dev'
+    - 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: |-
+      ${{
+           github.ref_name == 'main' && 'prod'
+        || github.ref_name == 'dev'  && 'dev'
+        ||                              'stage'
+      }}
+    container: debian:stable
+    steps:
+      - run: apt update
+      - run: apt install -y wget
+      - run: wget https://github.com/AntelopeIO/cdt/releases/download/v4.1.0/cdt_4.1.0-1_amd64.deb
+      - run: apt install -y ./cdt_4.1.0-1_amd64.deb
+      - run: wget https://github.com/AntelopeIO/leap/releases/download/v5.0.3/leap_5.0.3_amd64.deb
+      - run: apt install -y ./leap_5.0.3_amd64.deb
+      - uses: actions/checkout@v4
+      - name: Checkout system contracts repo
+        uses: actions/checkout@v4
+        with:
+          repository: AntelopeIO/reference-contracts
+          path: reference-contracts
+      - run: cdt-cpp -abigen src/${{ vars.SC_NAME }}.cpp -o ${{ vars.SC_NAME }}.wasm -I include/${{ vars.SC_NAME }} -I reference-contracts/contracts/eosio.system/include
+      - run: cleos wallet create --file wallet.pw >/dev/null
+      - run: cleos wallet open
+      - run: cat wallet.pw | cleos wallet unlock
+      - run: cleos wallet import --private-key ${{ secrets.SC_DEPLOY_KEY }} >/dev/null
+      - run: cleos -u ${{ vars.CHAIN_RPC_ENDPOINT }} set contract ${{ vars.SC_ACCOUNT_NAME }} . ${{ vars.SC_NAME }}.wasm ${{ vars.SC_NAME }}.abi -p ${{ vars.SC_ACCOUNT_NAME }}@deploy
+      - name: Archive smart contract wasm
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ vars.SC_NAME }}.wasm
+          path: ${{ vars.SC_NAME }}.wasm
+      - name: Archive smart contract abi
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ vars.SC_NAME }}.abi
+          path: ${{ vars.SC_NAME }}.abi
