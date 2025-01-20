@@ -51,7 +51,7 @@ void vpaysplit::resetbuyers() {
 void vpaysplit::transfer(name from, name to, asset quantity, std::string send_memo) {
     if (to != _self || from == _self) return;
     
-    if ((from == "eosio.vpay"_n || from == "eosio.bpay"_n || (test_enabled && from == test_account))) {
+    if ((from == "eosio.vpay"_n || (test_enabled && from == test_account))) {
         
         // Get total votes from producers table
         eosiosystem::producers_table producers("eosio"_n, "eosio"_n.value);
