@@ -50,7 +50,7 @@ class [[eosio::contract("vpaysplit")]] vpaysplit : public contract {
          * @param quantity Quantity
          * @param send_memo Memo
          */
-        [[eosio::on_notify("eosio.token::transfer")]]
+        [[eosio::on_notify("core.vaulta::transfer")]]
         void transfer(name from, name to, asset quantity, std::string send_memo);
         
     private:

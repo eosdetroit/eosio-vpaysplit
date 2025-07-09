@@ -121,7 +121,7 @@ void vpaysplit::transfer(name from, name to, asset quantity, std::string send_me
                 // Send it
                 action(
                     permission_level{_self, "active"_n},
-                    "eosio.token"_n,
+                    "core.vaulta"_n,
                     "transfer"_n,
                     std::make_tuple(_self, send_account, send_eos, buyer->send_memo)
                 ).send(); 
