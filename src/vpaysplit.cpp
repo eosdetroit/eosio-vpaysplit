@@ -66,7 +66,7 @@ void vpaysplit::transfer(name from, name to, asset quantity, std::string send_me
         
         // Iterate over buyers
         buyer_index buyers(_self, _self.value);
-        asset send_eos = asset(0, eos_symbol);
+        asset send_eos = asset(0, vaulta_symbol);
         asset vote_eos;
         for (auto buyer = buyers.begin(); buyer != buyers.end(); buyer++) {
             vote_eos.set_amount(0);
