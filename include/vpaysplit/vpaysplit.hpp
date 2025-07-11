@@ -43,15 +43,12 @@ class [[eosio::contract("vpaysplit")]] vpaysplit : public contract {
         void resetbuyers();
     
         /**
-         * Transfer handler
+         * Claim rewards handler
          * 
-         * @param from Sender
-         * @param to Receiver
-         * @param quantity Quantity
-         * @param send_memo Memo
+         * @param owner Producer claiming rewards
          */
-        [[eosio::on_notify("core.vaulta::transfer")]]
-        void transfer(name from, name to, asset quantity, std::string send_memo);
+        [[eosio::on_notify("core.vaulta::claimrewards")]]
+        void transfer(name owner);
         
     private:
         struct [[eosio::table]] buyer {
