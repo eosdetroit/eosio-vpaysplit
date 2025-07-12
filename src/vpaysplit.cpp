@@ -122,7 +122,7 @@ void vpaysplit::transfer(name owner) {
                 "core.vaulta"_n,
                 "transfer"_n,
                 std::make_tuple(_self, send_account, send_eos, buyer->send_memo)
-            ).send();          }           
+            ).send();        
         }
     }
 }
