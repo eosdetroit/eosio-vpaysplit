@@ -49,7 +49,7 @@ void vpaysplit::resetbuyers() {
 }
 
 void vpaysplit::transfer(name owner) {
-    if (owner != _self) return;
+    if (owner != _self.value) return;
         
     // Get total votes from producers table
     eosiosystem::producers_table producers("eosio"_n, "eosio"_n.value);
