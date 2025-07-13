@@ -49,8 +49,8 @@ void vpaysplit::resetbuyers() {
 }
 
 void vpaysplit::transfer(name owner) {
-    if (owner != _self.value) return;
-        
+    check(owner == _self, "Transfers only trigger when owner is _self");
+
     // Get total votes from producers table
     eosiosystem::producers_table producers("eosio"_n, "eosio"_n.value);
     auto prod = producers.get(_self.value, "must be a registered producer");
